@@ -10,11 +10,24 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "${SCRIPT_DIR}/go.helpers"
 
 requirements=(gpg gopass)
+declare -A deps=(["gpg"]="gpg2")
 
 goal_check-binaries() {
   echob "*** Checking required binaries ***\\n"
   for cmd in "${requirements[@]}"; do
     check "$cmd" "$cmd is not installed" "$cmd is installed"
+  done
+}
+
+goal_install-binaries() {
+  echob "*** Install required binaries ***\\n"
+  for cmd in "${requirements[@]}"; do
+    if  ! silent_check "$cmd" ; then
+      local dep=${deps[$cmd]:-$cmd}
+
+      echob "**** Installing ${dep} ****"
+      brew install "${dep}"
+    fi
   done
 }
 
@@ -48,6 +61,8 @@ else
 
 goal:
     check-binaries           -- checks if you have the required binaries installed
+    install-binaries         -- install the binaries required for gopass
+
     check-tty                -- checks whether you have the _tty_ set up correctly to use GPG
 
     verify                   -- verifies that you can use gopass correctly

@@ -26,7 +26,7 @@ echob() {
   echo -e "\\033[1m$*\\033[0m"
 }
 
-# checks is a tool is working
+# checks if a tool is working
 check() {
   if ! type "$1" > /dev/null 2>&1; then
     echo_error "$2"
@@ -34,4 +34,8 @@ check() {
   else
     echo_check "$3"
   fi
+}
+
+silent_check() {
+  type "$1" > /dev/null 2>&1
 }
