@@ -1,5 +1,7 @@
 # Gopass Verify
 
+[![Build Status](https://travis-ci.org/sirech/gopass-verify.svg?branch=master)](https://travis-ci.org/sirech/gopass-verify)
+
 This script is intended to be used to check if your setup will (probably, maybe?) work with [gopass](https://github.com/gopasspw/gopass).
 
 Setting up `gopass` can be a pain in the ass, specially if it is to be used by developers who are not familiar with _gpg_. I have spent a lot of time trying to debug non working setups lately, so I decided to write a script to catch some of the most common problems I have seen.
