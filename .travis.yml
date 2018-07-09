@@ -1,0 +1,7 @@
+language: generic
+stages:
+  - lint
+jobs:
+  include:
+    - stage: lint
+      script: shellcheck go*
