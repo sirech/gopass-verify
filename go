@@ -60,10 +60,26 @@ goal_check-secret-key() {
   fi
 }
 
+goal_check-encryption() {
+  echob "*** Checking if the gpg key can encrypt/decrypt a text ***\\n"
+
+  read -rp "Which key should be used? (Enter the name, the id or the email): " keyid
+
+  if echo 'example' | gpg --encrypt --recipient "${keyid}" | gpg --decrypt ; then
+    echo_check "\\nCheck successful"
+  else
+    echo ''
+    echo_error "Could not encrypt and decrypt text\\n"
+    echo "This usually means that the key is not imported correctly, or that there is no secret key, or that the key is not trusted. Gopass will not be able to decrypt secrets until you can use your key"
+    exit 1
+  fi
+}
+
 goal_verify() {
   goal_check-binaries
   goal_check-tty
   goal_check-secret-key
+  goal_check-encryption
 }
 
 TARGET=${1:-}
@@ -78,6 +94,7 @@ goal:
 
     check-tty                -- checks whether you have the _tty_ set up correctly to use GPG
     check-secret-key         -- checks that you have a GPG secret key
+    check-encryption         -- checks that you can encrypt and decrypt a text
 
     verify                   -- verifies that you can use gopass correctly
 "
