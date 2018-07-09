@@ -12,10 +12,32 @@ source "${SCRIPT_DIR}/go.helpers"
 requirements=(gpg gopass)
 
 goal_check-binaries() {
-  echob "*** Checking required binaries ***"
+  echob "*** Checking required binaries ***\\n"
   for cmd in "${requirements[@]}"; do
     check "$cmd" "$cmd is not installed" "$cmd is installed"
   done
+}
+
+goal_check-tty() {
+  echob "*** Checking GPG_TTY ***\\n"
+
+  if [ -z ${GPG_TTY+x} ]; then
+    echo_error "The variable GPG_TTY is not set\\n"
+    echo "Not having the GPG_TTY variable set up will lead to hard-to-debug errors when calling gpg. To set it, do:
+
+    export GPG_TTY=\$(tty)
+
+You should add this line to your ~/.bashrc file to ensure this is set every session.
+"
+    exit 1
+  else
+    echo_check "GPG_TTY is set"
+  fi
+}
+
+goal_verify() {
+  goal_check-binaries
+  goal_check-tty
 }
 
 TARGET=${1:-}
@@ -26,6 +48,9 @@ else
 
 goal:
     check-binaries           -- checks if you have the required binaries installed
+    check-tty                -- checks whether you have the _tty_ set up correctly to use GPG
+
+    verify                   -- verifies that you can use gopass correctly
 "
   exit 1
 fi
