@@ -15,7 +15,7 @@ declare -A deps=(["gpg"]="gpg2")
 goal_check-binaries() {
   echob "*** Checking required binaries ***\\n"
   for cmd in "${requirements[@]}"; do
-    check "$cmd" "$cmd is not installed" "$cmd is installed"
+    check "$cmd" "$cmd is not installed\\nRun ./go install-binaries" "$cmd is installed"
   done
 }
 
@@ -48,9 +48,22 @@ You should add this line to your ~/.bashrc file to ensure this is set every sess
   fi
 }
 
+goal_check-secret-key() {
+  echob "*** Checking if there is a secret key ***\\n"
+
+  if [ -z "$(gpg --list-secret-keys)" ]; then
+    echo_error "There is no secret key\\n"
+    echo "Not having a secret key means that you will not be able to read secrets from gopass, even if you are added as a recipient to it"
+    exit 1
+  else
+    echo_check "Secret key is present"
+  fi
+}
+
 goal_verify() {
   goal_check-binaries
   goal_check-tty
+  goal_check-secret-key
 }
 
 TARGET=${1:-}
@@ -64,6 +77,7 @@ goal:
     install-binaries         -- install the binaries required for gopass
 
     check-tty                -- checks whether you have the _tty_ set up correctly to use GPG
+    check-secret-key         -- checks that you have a GPG secret key
 
     verify                   -- verifies that you can use gopass correctly
 "
