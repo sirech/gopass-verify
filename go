@@ -34,7 +34,7 @@ goal_install-binaries() {
 goal_check-tty() {
   echob "*** Checking GPG_TTY ***\\n"
 
-  if [ -z ${GPG_TTY+x} ]; then
+  if [ -z "${GPG_TTY+x}" ]; then
     echo_error "The variable GPG_TTY is not set\\n"
     echo "Not having the GPG_TTY variable set up will lead to hard-to-debug errors when calling gpg. To set it, do:
 
