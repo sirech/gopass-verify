@@ -10,7 +10,6 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "${SCRIPT_DIR}/go.helpers"
 
 requirements=(gpg gopass)
-declare -A deps=(["gpg"]="gpg2")
 
 goal_check-binaries() {
   echob "*** Checking required binaries ***\\n"
@@ -22,11 +21,13 @@ goal_check-binaries() {
 goal_install-binaries() {
   echob "*** Install required binaries ***\\n"
   for cmd in "${requirements[@]}"; do
-    if  ! silent_check "$cmd" ; then
-      local dep=${deps[$cmd]:-$cmd}
+    if ! silent_check "$cmd" ; then
+      if [ "$cmd" = "gpg" ]; then
+        cmd="gpg2"
+      fi
 
-      echob "**** Installing ${dep} ****"
-      brew install "${dep}"
+      echob "**** Installing ${cmd} ****"
+      brew install "${cmd}"
     fi
   done
 }
