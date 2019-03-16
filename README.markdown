@@ -6,6 +6,14 @@ This script is intended to be used to check if your setup will (probably, maybe?
 
 Setting up `gopass` can be a pain in the ass, specially if it is to be used by developers who are not familiar with _gpg_. I have spent a lot of time trying to debug non working setups lately, so I decided to write a script to catch some of the most common problems I have seen.
 
+## Running the checks in one command
+
+Just use
+
+```bash
+git clone https://github.com/sirech/gopass-verify.git && cd gopass-verify && ./go verify
+```
+
 ## Running the script
 
 The script is self documenting, so just run it from the directory
