@@ -5,6 +5,7 @@ set -o nounset
 set -o pipefail
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+GOPASS_VERSION="1.8.4"
 
 # shellcheck source=./go.helpers
 source "${SCRIPT_DIR}/go.helpers"
@@ -16,6 +17,17 @@ goal_check-binaries() {
   for cmd in "${requirements[@]}"; do
     check "$cmd" "$cmd is not installed\\nRun ./go install-binaries" "$cmd is installed"
   done
+}
+
+goal_check-version() {
+  echob "*** Checking versions of the binaries ***\\n"
+
+  if [[ "$(gopass -v)" != "gopass ${GOPASS_VERSION}"* ]]; then
+    echo_error "the version of gopass is too old"
+    exit 1
+  else
+    echo_check "gopass has a compatible version"
+  fi
 }
 
 goal_install-binaries() {
@@ -78,6 +90,7 @@ goal_check-encryption() {
 
 goal_verify() {
   goal_check-binaries
+  goal_check-version
   goal_check-tty
   goal_check-secret-key
   goal_check-encryption
@@ -91,6 +104,7 @@ else
 
 goal:
     check-binaries           -- checks if you have the required binaries installed
+    check-version            -- checks if the versions of the required binaries match
     install-binaries         -- install the binaries required for gopass
 
     check-tty                -- checks whether you have the _tty_ set up correctly to use GPG
