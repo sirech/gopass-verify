@@ -5,7 +5,7 @@ set -o nounset
 set -o pipefail
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-GOPASS_VERSION="1.8.4"
+GOPASS_VERSION="1.8.5"
 
 # shellcheck source=./go.helpers
 source "${SCRIPT_DIR}/go.helpers"
