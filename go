@@ -88,12 +88,25 @@ goal_check-encryption() {
   fi
 }
 
+goal_check-path() {
+  echob "*** Checking if path is configured correctly ***\\n"
+
+  for store in $(gopass config path); do
+    if echo "$store" | grep -q gpgcli-noop ; then
+      echo_error "Path config is set to noop\\n"
+      echo "If you run 'gopass config path' you will see that one of your backends is configured as gpgcli-noop, which won't work. It should be set to gpgcli-gitcli instead. Check ~/.config/gopass/config.yml"
+      exit 1
+    fi
+  done
+}
+
 goal_verify() {
   goal_check-binaries
   goal_check-version
   goal_check-tty
   goal_check-secret-key
   goal_check-encryption
+  goal_check-path
 }
 
 TARGET=${1:-}
@@ -110,6 +123,8 @@ goal:
     check-tty                -- checks whether you have the _tty_ set up correctly to use GPG
     check-secret-key         -- checks that you have a GPG secret key
     check-encryption         -- checks that you can encrypt and decrypt a text
+
+    check-path               -- checks that the path to the gopass store is configured correctly
 
     verify                   -- verifies that you can use gopass correctly
 "
