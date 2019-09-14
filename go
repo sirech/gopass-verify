@@ -184,17 +184,19 @@ else
   echo "usage: $0 <goal>
 
 goal:
-    check-binaries           -- checks if you have the required binaries installed
-    check-version            -- checks if the versions of the required binaries match
-    install-binaries         -- install the binaries required for gopass
+    check-tools              -- Check if you have the required tools installed
+    check-gopass             -- Check if Gopass is correctly installed
 
-    check-tty                -- checks whether you have the _tty_ set up correctly to use GPG
-    check-secret-key         -- checks that you have a GPG secret key
-    check-encryption         -- checks that you can encrypt and decrypt a text
+    install-tools            -- Install the required tools for Gopass
+    install-gopass           -- Install Gopass
 
-    check-path               -- checks that the path to the gopass store is configured correctly
+    check-tty                -- Check whether you have the _tty_ set up correctly to use GPG
+    check-secret-key         -- Check that you have a GPG secret key
+    check-encryption         -- Check that you can encrypt and decrypt a text
 
-    verify                   -- verifies that you can use gopass correctly
+    check-path               -- Check that the path to the Gopass store is configured correctly
+
+    verify                   -- Verify that you can use Gopass correctly
 "
   exit 1
 fi
